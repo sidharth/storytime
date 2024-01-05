@@ -1,7 +1,6 @@
 "use client";
 import { StoryPage } from "../common/contracts";
 import React from "react";
-
 import ReactPDF, {
   Page,
   Text,
@@ -9,14 +8,26 @@ import ReactPDF, {
   Image,
   Document,
   StyleSheet,
+  Font,
   PDFDownloadLink,
 } from "@react-pdf/renderer";
 
+Font.register({
+  family: "Playfair Display",
+  src: "/PlayfairDisplay-Regular.ttf",
+});
+
 const styles = StyleSheet.create({
-  page: {},
+  page: {
+    flexDirection: "row",
+    backgroundColor: "#E4E4E4",
+    fontFamily: "Playfair Display",
+    fontSize: 96,
+  },
   section: {
-    margin: 10,
-    padding: 10,
+    marginVertical: 80,
+    marginHorizontal: 32,
+    padding: 20,
   },
 });
 
@@ -26,7 +37,7 @@ function StoryPageDocument(storyPages: StoryPage[]) {
       {storyPages.map((storyPage, idx) => (
         <>
           <Page size={[1000, 1000]} style={styles.page}>
-            <View style={styles.section}>
+            <View>
               <Image src={storyPage.imgUrl} />
             </View>
           </Page>

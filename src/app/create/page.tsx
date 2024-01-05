@@ -9,11 +9,12 @@ const storySerif = Playfair_Display({ subsets: ["latin"] });
 
 // grid.register();
 
+const defaultImageUrl =
+  "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Steamboat_Willie_1928_Poster.png/410px-Steamboat_Willie_1928_Poster.png";
 export default function Create() {
   const [storyPages, setStoryPages] = useState<StoryPage[]>([
     {
-      imgUrl:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Steamboat_Willie_1928_Poster.png/410px-Steamboat_Willie_1928_Poster.png",
+      imgUrl: defaultImageUrl,
       text: "Once upon a time...",
     },
   ]);
@@ -22,7 +23,20 @@ export default function Create() {
       <div>
         <div>
           {storyPages.map((storyPage, idx) => (
-            <StoryPageComponent {...storyPage} key={"storypage-" + idx} />
+            <StoryPageComponent
+              storyPage={storyPage}
+              onImgChange={(newImgUrl: string) => {
+                let newStoryPages = [...storyPages];
+                newStoryPages[idx].imgUrl = newImgUrl;
+                setStoryPages(newStoryPages);
+              }}
+              onTextChange={(newText: string) => {
+                let newStoryPages = [...storyPages];
+                newStoryPages[idx].text = newText;
+                setStoryPages(newStoryPages);
+              }}
+              key={"storypage-" + idx}
+            />
           ))}
         </div>
         <div className="flex justify-end">
@@ -33,8 +47,7 @@ export default function Create() {
                 setStoryPages([
                   ...storyPages,
                   {
-                    imgUrl:
-                      "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Steamboat_Willie_1928_Poster.png/410px-Steamboat_Willie_1928_Poster.png",
+                    imgUrl: defaultImageUrl,
                     text: "",
                   },
                 ]);
@@ -60,12 +73,18 @@ export default function Create() {
   );
 }
 
-function StoryPageComponent({ imgUrl: image, text }: StoryPage) {
-  const [imgUrl, setImgUrl] = useState<string>(image);
+function StoryPageComponent(props: {
+  storyPage: StoryPage;
+  onImgChange: (newImgUrl: string) => void;
+  onTextChange: (newText: string) => void;
+}) {
+  const [imgUrl, setImgUrl] = useState<string>(props.storyPage.imgUrl);
   const [predictionId, setPredictionId] = useState<string | undefined>("");
   const [userPrompt, setUserPrompt] = useState<string>("");
   const [showImageEditor, setShowImageEditor] = useState<boolean>(false);
-  const [pageDisplayText, setPageDisplayText] = useState<string>(text);
+  const [pageDisplayText, setPageDisplayText] = useState<string>(
+    props.storyPage.text
+  );
 
   return (
     <div className="mt-8">
@@ -99,6 +118,7 @@ function StoryPageComponent({ imgUrl: image, text }: StoryPage) {
             placeholder="Image prompt"
             onChange={(e) => {
               setUserPrompt(e.target.value);
+              props.onTextChange(e.target.value);
             }}
           />
           <button
@@ -122,6 +142,7 @@ function StoryPageComponent({ imgUrl: image, text }: StoryPage) {
                   getImgResponse.predictionStatus === "failed"
                 ) {
                   setImgUrl(getImgResponse.imgUrl);
+                  props.onImgChange(getImgResponse.imgUrl);
                   setPredictionId(undefined);
                   clearInterval(interval);
                 }
