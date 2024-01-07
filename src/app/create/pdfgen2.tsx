@@ -20,7 +20,7 @@ Font.register({
 const styles = StyleSheet.create({
   page: {
     flexDirection: "row",
-    backgroundColor: "#E4E4E4",
+    backgroundColor: "#FFF",
     fontFamily: "Playfair Display",
     fontSize: 96,
   },
@@ -59,7 +59,7 @@ export function PdfDownloadButton(storyPages: StoryPage[]) {
       document={StoryPageDocument(storyPages)}
       fileName="somename.pdf"
     >
-      Save to PDF.
+      Save to PDF
     </PDFDownloadLink>
   );
 }

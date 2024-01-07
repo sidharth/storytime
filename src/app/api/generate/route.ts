@@ -15,13 +15,14 @@ export async function POST(req: NextRequest) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        // Pinned to a specific version of Stable Diffusion
-        // See https://replicate.com/stability-ai/sdxl
         version:
-          "2b017d9b67edd2ee1401238df49d75da53c523f36e363881e057f5dc3ed3c5b2",
+          "6244ebc4d96ffcc48fa1270d22a1f014addf79c41732fe205fb1ff638c409267",
 
         // This is the text prompt that will be submitted by a form on the frontend
-        input: { prompt: generateRequest.userPrompt },
+        input: {
+          prompt: generateRequest.userPrompt + ",watercolor painting",
+          agree_to_research_only: true,
+        },
       }),
     }
   );

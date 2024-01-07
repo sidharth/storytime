@@ -4,13 +4,17 @@ import { generateImage, getImg } from "../common/client-network";
 import { Playfair_Display } from "next/font/google";
 import { StoryPage } from "../common/contracts";
 import { PdfDownloadButton } from "./pdfgen2";
+import {
+  ArrowClockwise,
+  FileArrowDown,
+  PlusSquare,
+} from "@phosphor-icons/react";
 
 const storySerif = Playfair_Display({ subsets: ["latin"] });
 
 // grid.register();
 
-const defaultImageUrl =
-  "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Steamboat_Willie_1928_Poster.png/410px-Steamboat_Willie_1928_Poster.png";
+const defaultImageUrl = "/img/steamboat-willie.jpg";
 export default function Create() {
   const [storyPages, setStoryPages] = useState<StoryPage[]>([
     {
@@ -39,34 +43,26 @@ export default function Create() {
             />
           ))}
         </div>
-        <div className="flex justify-end">
-          <span className="text-right">
-            <button
-              className="underline"
-              onClick={() => {
-                setStoryPages([
-                  ...storyPages,
-                  {
-                    imgUrl: defaultImageUrl,
-                    text: "",
-                  },
-                ]);
-              }}
-            >
-              Add New Page
-            </button>
-            <br />
-            {/* <button
-              className="underline"
-              onClick={async () => {
-                let pdf = await getPdf(storyPages);
-                // console.log("recieved story pages:" + pdf.length);
-              }}
-            >
-              Save PDF
-            </button> */}
+        <div className="mt-16 mb-8 flex justify-end">
+          <button
+            className="px-4 py-2 mx-2 bg-yellow-400 hover:bg-yellow-500 text-white rounded-xl flex items-center"
+            onClick={() => {
+              setStoryPages([
+                ...storyPages,
+                {
+                  imgUrl: defaultImageUrl,
+                  text: "",
+                },
+              ]);
+            }}
+          >
+            <PlusSquare size={32} className="inline mr-1" />
+            Add New Page
+          </button>
+          <button className="px-4 py-2 bg-green-500 text-white rounded-xl flex items-center">
+            <FileArrowDown size={32} className="inline mr-1" />
             {PdfDownloadButton(storyPages)}
-          </span>
+          </button>
         </div>
       </div>
     </div>
@@ -114,44 +110,45 @@ function StoryPageComponent(props: {
       <div>
         <div className="w-64 my-2 rounded-xl p-2 bg-yellow-200">
           <textarea
-            className="w-full p-1 rounded-md"
-            placeholder="Image prompt"
+            className="w-full p-1 rounded-md text-sm"
+            placeholder={`eg: a mouse steering a steamboat`}
             onChange={(e) => {
               setUserPrompt(e.target.value);
               props.onTextChange(e.target.value);
             }}
           />
-          <button
-            className="underline"
-            onClick={async () => {
-              setPredictionId(undefined);
-              let generateResponse = await generateImage({
-                userPrompt: userPrompt,
-              });
-
-              let predictionId = generateResponse.predictionId;
-              setPredictionId(predictionId);
-
-              // Check every 5 seconds if the image is ready.
-              let interval = setInterval(async () => {
-                let getImgResponse = await getImg({
-                  predictionId: predictionId,
+          <div className="flex justify-end">
+            <button
+              className="px-2 py-1 bg-yellow-400 hover:bg-yellow-500 rounded-lg "
+              onClick={async () => {
+                setPredictionId(undefined);
+                let generateResponse = await generateImage({
+                  userPrompt: userPrompt,
                 });
-                if (
-                  getImgResponse.predictionStatus === "succeeded" ||
-                  getImgResponse.predictionStatus === "failed"
-                ) {
-                  setImgUrl(getImgResponse.imgUrl);
-                  props.onImgChange(getImgResponse.imgUrl);
-                  setPredictionId(undefined);
-                  clearInterval(interval);
-                }
-              }, 5000);
-            }}
-          >
-            Recreate Image
-          </button>{" "}
-          <br />
+
+                let predictionId = generateResponse.predictionId;
+                setPredictionId(predictionId);
+
+                // Check every 5 seconds if the image is ready.
+                let interval = setInterval(async () => {
+                  let getImgResponse = await getImg({
+                    predictionId: predictionId,
+                  });
+                  if (
+                    getImgResponse.predictionStatus === "succeeded" ||
+                    getImgResponse.predictionStatus === "failed"
+                  ) {
+                    setImgUrl(getImgResponse.imgUrl);
+                    props.onImgChange(getImgResponse.imgUrl);
+                    setPredictionId(undefined);
+                    clearInterval(interval);
+                  }
+                }, 1500);
+              }}
+            >
+              <ArrowClockwise size={20} className="inline" />
+            </button>
+          </div>
         </div>
       </div>
     </div>
