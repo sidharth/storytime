@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { generateImage, getImg } from "../common/client-network";
 import { Playfair_Display } from "next/font/google";
 import { StoryPage } from "../common/contracts";
@@ -15,6 +15,8 @@ const storySerif = Playfair_Display({ subsets: ["latin"] });
 // grid.register();
 
 const defaultImageUrl = "/img/steamboat-willie.jpg";
+const loadingImageUrl = "/img/pixelated-loading.gif";
+
 export default function Create() {
   const [storyPages, setStoryPages] = useState<StoryPage[]>([
     {
@@ -88,10 +90,8 @@ function StoryPageComponent(props: {
         <div className="flex flex-row rounded-xl overflow-hidden">
           <div className="w-64 h-64 bg-white overflow-hidden flex justify-center items-center">
             {predictionId ? ( // Default values shown
-              <div></div>
+              <img className="" src={loadingImageUrl} />
             ) : (
-              // <l-grid size="60" speed="1.5" color="black"></l-grid>
-
               <img className="" src={imgUrl} />
             )}
           </div>
@@ -101,6 +101,9 @@ function StoryPageComponent(props: {
               storySerif.className,
             ].join(" ")}
             contentEditable
+            onInput={(e) => {
+              props.onTextChange((e.target as any).textContent);
+            }}
           >
             {pageDisplayText}
           </div>
@@ -114,7 +117,6 @@ function StoryPageComponent(props: {
             placeholder={`eg: a mouse steering a steamboat`}
             onChange={(e) => {
               setUserPrompt(e.target.value);
-              props.onTextChange(e.target.value);
             }}
           />
           <div className="flex justify-end">
@@ -122,6 +124,7 @@ function StoryPageComponent(props: {
               className="px-2 py-1 bg-yellow-400 hover:bg-yellow-500 rounded-lg "
               onClick={async () => {
                 setPredictionId(undefined);
+
                 let generateResponse = await generateImage({
                   userPrompt: userPrompt,
                 });
