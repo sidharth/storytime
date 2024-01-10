@@ -22,6 +22,8 @@ export async function POST(req: NextRequest) {
         input: {
           prompt: generateRequest.userPrompt + ",watercolor painting",
           agree_to_research_only: true,
+          width: 768,
+          height: 768,
         },
       }),
     }

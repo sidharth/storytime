@@ -9,25 +9,32 @@ import {
   FileArrowDown,
   PlusSquare,
 } from "@phosphor-icons/react";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 
 const storySerif = Playfair_Display({ subsets: ["latin"] });
-
-// grid.register();
 
 const defaultImageUrl = "/img/steamboat-willie.jpg";
 const loadingImageUrl = "/img/pixelated-loading.gif";
 
 export default function Create() {
-  const [storyPages, setStoryPages] = useState<StoryPage[]>([
-    {
-      imgUrl: defaultImageUrl,
-      text: "Once upon a time...",
-    },
-  ]);
+  const [storyPages, setStoryPages] = useState<StoryPage[]>([]);
+  const [parent, enableAnimations] = useAutoAnimate(/* optional config */);
+
   return (
     <div className="flex justify-center">
       <div>
-        <div>
+        <div
+          className={[
+            "mt-16 text-4xl font-bold text-center",
+            storySerif.className,
+          ].join(" ")}
+        >
+          Storytime
+        </div>
+        <div className="mt-8 text-xl text-center">
+          Write and illustrate storybooks.
+        </div>
+        <div ref={parent}>
           {storyPages.map((storyPage, idx) => (
             <StoryPageComponent
               storyPage={storyPage}
@@ -45,15 +52,15 @@ export default function Create() {
             />
           ))}
         </div>
-        <div className="mt-16 mb-8 flex justify-end">
+        <div className="mt-16 mb-8 flex flex-col justify-center items-center">
           <button
-            className="px-4 py-2 mx-2 bg-yellow-400 hover:bg-yellow-500 text-white rounded-xl flex items-center"
+            className="px-4 py-2 bg-yellow-400 hover:bg-yellow-500 text-white rounded-xl flex items-center"
             onClick={() => {
               setStoryPages([
                 ...storyPages,
                 {
                   imgUrl: defaultImageUrl,
-                  text: "",
+                  text: "Once upon a time,",
                 },
               ]);
             }}
@@ -61,7 +68,15 @@ export default function Create() {
             <PlusSquare size={32} className="inline mr-1" />
             Add New Page
           </button>
-          <button className="px-4 py-2 bg-green-500 text-white rounded-xl flex items-center">
+          <br />
+          <button
+            className={
+              "px-4 py-2  text-white rounded-xl flex items-center" +
+              (storyPages.length == 0
+                ? " bg-gray-500 hover:bg-gray-500 opacity-30"
+                : " bg-green-500 hover:bg-green-600")
+            }
+          >
             <FileArrowDown size={32} className="inline mr-1" />
             {PdfDownloadButton(storyPages)}
           </button>

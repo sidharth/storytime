@@ -1,4 +1,7 @@
 [✅] Make the background white
 [✅] Make default picture square
 [✅] Make the save/add buttons clearer
-[] Add a loading state when the image is waiting.
+[✅] Add a loading state when the image is waiting.
+[] Fix bug with 
+[] Make homepage graphic
+[] Deploy to subdomain.
