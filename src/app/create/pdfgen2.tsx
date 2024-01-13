@@ -53,20 +53,12 @@ function StoryPageDocument(storyPages: StoryPage[]) {
 }
 
 export function PdfDownloadButton(storyPages: StoryPage[]) {
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  return isClient ? (
+  return (
     <PDFDownloadLink
       document={StoryPageDocument(storyPages)}
       fileName="StoryTime.pdf"
     >
       Save to PDF
     </PDFDownloadLink>
-  ) : (
-    <></>
   );
 }

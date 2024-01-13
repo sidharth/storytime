@@ -32,7 +32,7 @@ export default function Create() {
           Storytime
         </div>
         <div className="mt-8 text-xl text-center">
-          Write and illustrate storybooks.
+          Write ✍️ and illustrate 🎨 stories
         </div>
         <div ref={parent}>
           {storyPages.map((storyPage, idx) => (
@@ -69,17 +69,17 @@ export default function Create() {
             Add New Page
           </button>
           <br />
-          <button
-            className={
-              "px-4 py-2  text-white rounded-xl flex items-center" +
-              (storyPages.length == 0
-                ? " bg-gray-500 hover:bg-gray-500 opacity-30"
-                : " bg-green-500 hover:bg-green-600")
-            }
-          >
-            <FileArrowDown size={32} className="inline mr-1" />
-            {PdfDownloadButton(storyPages)}
-          </button>
+
+          {storyPages.length > 0 && (
+            <button
+              className={
+                "px-4 py-2  text-white rounded-xl flex items-center bg-green-500 hover:bg-green-600"
+              }
+            >
+              <FileArrowDown size={32} className="inline mr-1" />
+              {PdfDownloadButton(storyPages)}
+            </button>
+          )}
         </div>
       </div>
     </div>
