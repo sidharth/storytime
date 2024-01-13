@@ -101,32 +101,30 @@ function StoryPageComponent(props: {
 
   return (
     <div className="mt-8">
-      <div className="flex flex-row">
-        <div className="flex flex-row rounded-xl overflow-hidden">
-          <div className="w-64 h-64 bg-white overflow-hidden flex justify-center items-center">
-            {predictionId ? ( // Default values shown
-              <img className="" src={loadingImageUrl} />
-            ) : (
-              <img className="" src={imgUrl} />
-            )}
-          </div>
-          <div
-            className={[
-              "w-64 h-64 py-8 px-4 bg-white text-2xl",
-              storySerif.className,
-            ].join(" ")}
-            contentEditable
-            onInput={(e) => {
-              props.onTextChange((e.target as any).textContent);
-            }}
-          >
-            {pageDisplayText}
-          </div>
+      <div className="flex flex-row rounded-xl overflow-hidden justify-center items-center">
+        <div className="w-44 h-44 md:w-64 md:h-64 bg-white flex justify-center items-center rounded-tl-xl rounded-bl-xl overflow-hidden">
+          {predictionId ? ( // Default values shown
+            <img className="" src={loadingImageUrl} />
+          ) : (
+            <img className="" src={imgUrl} />
+          )}
+        </div>
+        <div
+          className={[
+            "w-44 h-44 text-md md:w-64 md:h-64 md:text-2xl py-8 px-4 bg-white  rounded-tr-xl rounded-br-xl overflow-hidden",
+            storySerif.className,
+          ].join(" ")}
+          contentEditable
+          onInput={(e) => {
+            props.onTextChange((e.target as any).textContent);
+          }}
+        >
+          {pageDisplayText}
         </div>
       </div>
 
       <div>
-        <div className="w-64 my-2 rounded-xl p-2 bg-yellow-200">
+        <div className="w-44 md:w-64 my-2 rounded-xl p-2 bg-yellow-200">
           <textarea
             className="w-full p-1 rounded-md text-sm"
             placeholder={`eg: a mouse steering a steamboat`}
