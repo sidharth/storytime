@@ -1,7 +1,7 @@
 "use client";
 import { StoryPage } from "../common/contracts";
 import React from "react";
-import ReactPDF, {
+import {
   Page,
   Text,
   View,
@@ -57,7 +57,7 @@ export function PdfDownloadButton(storyPages: StoryPage[]) {
   return (
     <PDFDownloadLink
       document={StoryPageDocument(storyPages)}
-      fileName="somename.pdf"
+      fileName="StoryTime.pdf"
     >
       Save to PDF
     </PDFDownloadLink>

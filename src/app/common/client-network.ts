@@ -1,3 +1,10 @@
+import {
+  GenerateRequest,
+  GenerateResponse,
+  GetImgRequest,
+  GetImgResponse,
+} from "./contracts";
+
 export async function generateImage(
   req: GenerateRequest
 ): Promise<GenerateResponse> {
