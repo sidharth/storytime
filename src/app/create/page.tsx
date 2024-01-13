@@ -56,11 +56,16 @@ export default function Create() {
           <button
             className="px-4 py-2 bg-yellow-400 hover:bg-yellow-500 text-white rounded-xl flex items-center"
             onClick={() => {
+              let newText = "";
+              if (storyPages.length == 0) {
+                newText = "Once upon a time,";
+              }
+
               setStoryPages([
                 ...storyPages,
                 {
                   imgUrl: defaultImageUrl,
-                  text: "Once upon a time,",
+                  text: newText,
                 },
               ]);
             }}
