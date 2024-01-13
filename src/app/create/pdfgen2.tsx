@@ -1,6 +1,6 @@
 "use client";
 import { StoryPage } from "../common/contracts";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Page,
   Text,
@@ -53,13 +53,20 @@ function StoryPageDocument(storyPages: StoryPage[]) {
 }
 
 export function PdfDownloadButton(storyPages: StoryPage[]) {
-  console.log("storypages: ", storyPages);
-  return (
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  return isClient ? (
     <PDFDownloadLink
       document={StoryPageDocument(storyPages)}
       fileName="StoryTime.pdf"
     >
       Save to PDF
     </PDFDownloadLink>
+  ) : (
+    <></>
   );
 }
